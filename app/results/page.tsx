@@ -41,6 +41,14 @@ function ResultsPageInner() {
   const [activeSource, setActiveSource] = useState(0);
   const result = results[activeSource] ?? results[0];
 
+  const simplifiedTextForSpeech = useMemo(
+    () =>
+      result.simplifiedText
+        .map((section) => `${section.heading}. ${section.body}`)
+        .join(" "),
+    [result]
+  );
+
   return (
     <div className="container max-w-4xl py-16">
       <div className="mb-10 text-center">
@@ -132,10 +140,7 @@ function ResultsPageInner() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <AudioPanel
-                fileName={result.audio.fileName}
-                durationSeconds={result.audio.durationSeconds}
-              />
+              <AudioPanel text={simplifiedTextForSpeech} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -186,7 +191,7 @@ function ResultsPageInner() {
               </Button>
             </CardHeader>
             <CardContent>
-              <LiveCaptions lines={result.captions} />
+              <LiveCaptions />
             </CardContent>
           </Card>
         </TabsContent>
