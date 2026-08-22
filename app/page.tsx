@@ -91,6 +91,9 @@ export default function HomePage() {
           <Button asChild size="lg" variant="outline">
             <Link href="/upload">Skip to Upload</Link>
           </Button>
+          <Button asChild size="lg" variant="outline">
+            <Link href="/results?demo=1">Try Demo Now</Link>
+          </Button>
         </div>
       </section>
 

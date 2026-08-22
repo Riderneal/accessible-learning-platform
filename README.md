@@ -1,16 +1,27 @@
 # Accessible Learning Platform
 
-A Next.js 14 (App Router) + TypeScript + Tailwind CSS starter for **PS-06: Accessible Learning — On-Demand Format Conversion**.
+**On-demand accessible format conversion for educational content.**
 
-Converts standard educational content (PDFs, notes, audio, video, images) into personalized accessible formats — simplified text, audio narration, image descriptions, and captions — based on a student's selected needs (Visual, Hearing, Cognitive, Motor).
+Converts standard study materials (PDFs, notes, audio, video, images) into personalized accessible formats — simplified text, audio narration, image descriptions, and live captions — based on a student's selected needs (Visual, Hearing, Cognitive, Motor).
+
+Built for **PS-06: Accessible Learning — On-Demand Format Conversion**.
+
+## Features
+
+- Simplified Text — complex material rewritten in plain language, key concepts preserved
+- Text-to-Speech Audio — playable narration with speed control and a progress bar
+- Image & Diagram Descriptions — auto-generated alt-text for figures and charts
+- Live Captions — simulated real-time captioning plus a full transcript, exportable as .srt
+- Personalized Profile — students pick Visual / Hearing / Cognitive / Motor needs up front
+- Try Demo Now — one-click demo flow straight from the landing page, no upload required
 
 ## Tech stack
 
-- **Next.js 14** — App Router, Server & Client Components
-- **TypeScript**
-- **Tailwind CSS** with a dark, glowing "space-tech" theme matching the design brief
-- **shadcn/ui-style components** (Button, Card, Tabs, Checkbox, Badge) built on Radix primitives
-- **lucide-react** icons
+- Next.js 14 — App Router, Server & Client Components
+- TypeScript
+- Tailwind CSS with a dark, glowing "space-tech" theme
+- shadcn/ui-style components (Button, Card, Tabs, Checkbox, Badge) built on Radix primitives
+- lucide-react icons
 
 ## Getting started
 
@@ -21,57 +32,57 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## User flow
+
+1. Landing (`/`) — Hero section explaining the platform, with "Start Converting", "Skip to Upload", and "Try Demo Now" CTAs.
+2. Profile (`/profile`) — Multi-select cards for Visual / Hearing / Cognitive / Motor needs; selections are passed via query params.
+3. Upload (`/upload`) — Drag-and-drop zone (also supports click-to-browse) accepting PDF, images, text, audio, and video. Shows a file list with remove/size/type, then a "Convert" action.
+4. Results (`/results`) — Tabbed view: Simplified Text, Audio, Image Descriptions, Captions. Each uploaded file gets its own converted result, driven by `lib/conversion.ts` and rendered with the `AudioPanel` and `LiveCaptions` components.
+
 ## Folder structure
 
 ```
 accessible-learning-platform/
-├── app/
-│   ├── layout.tsx          # Root layout (navbar, footer, fonts)
-│   ├── globals.css         # Tailwind + CSS variables (dark theme)
-│   ├── page.tsx             # Landing page (hero + "Start Converting")
-│   ├── profile/
-│   │   └── page.tsx         # Step 1: select disabilities (multi-select)
-│   ├── upload/
-│   │   └── page.tsx         # Step 2: drag-and-drop file upload
-│   └── results/
-│       └── page.tsx         # Step 3: tabbed results (Text/Audio/Images/Captions)
-├── components/
-│   ├── Navbar.tsx
-│   └── ui/
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── tabs.tsx
-│       ├── checkbox.tsx
-│       └── badge.tsx
-├── lib/
-│   └── utils.ts             # cn() class-merging helper
-├── components.json          # shadcn/ui config (for `npx shadcn add ...`)
-├── tailwind.config.ts
-├── postcss.config.js
-├── next.config.js
-├── tsconfig.json
-└── package.json
-```
+  app/
+      layout.tsx           - Root layout (navbar, footer, fonts)
+          globals.css          - Tailwind + CSS variables (dark theme)
+              page.tsx             - Landing page (hero + CTAs, incl. "Try Demo Now")
+                  profile/page.tsx     - Step 1: select disabilities (multi-select)
+                      upload/page.tsx      - Step 2: drag-and-drop file upload
+                          results/page.tsx     - Step 3: tabbed results (Text/Audio/Images/Captions)
+                            components/
+                                Navbar.tsx
+                                    AudioPanel.tsx       - Playable audio narration player (speed control, progress)
+                                        LiveCaptions.tsx     - Simulated live captions + transcript
+                                            ui/
+                                                  button.tsx
+                                                        card.tsx
+                                                              tabs.tsx
+                                                                    checkbox.tsx
+                                                                          badge.tsx
+                                                                            lib/
+                                                                                utils.ts             - cn() class-merging helper
+                                                                                    conversion.ts        - Mock conversion pipeline (swap for a real API)
+                                                                                      components.json        - shadcn/ui config (for npx shadcn add ...)
+                                                                                        tailwind.config.ts
+                                                                                          postcss.config.js
+                                                                                            next.config.js
+                                                                                              tsconfig.json
+                                                                                                package.json
+                                                                                                ```
 
-## User flow
+                                                                                                ## Notes for extending this into a real product
 
-1. **Landing (`/`)** — Hero section explaining the platform, with a "Start Converting" CTA.
-2. **Profile (`/profile`)** — Multi-select cards for Visual / Hearing / Cognitive / Motor needs; selections are passed via query params.
-3. **Upload (`/upload`)** — Drag-and-drop zone (also supports click-to-browse) accepting PDF, images, text, audio, and video. Shows a file list with remove/size/type, then a "Convert" action.
-4. **Results (`/results`)** — Tabbed view: **Simplified Text**, **Audio**, **Image Descriptions**, **Captions**, each with mocked but realistic sample output and export/download actions.
+                                                                                                - Wire `lib/conversion.ts`'s `convertFiles` to an actual API route (e.g. `app/api/convert/route.ts`) that accepts the files and calls your conversion pipeline (OCR, TTS, STT, image captioning, summarization) instead of returning mock data.
+                                                                                                - Persist the user's profile (needs) in a database or cookie instead of query params.
+                                                                                                - Add authentication if you need per-student history.
+                                                                                                - Stream or poll real conversion output for the Audio and Captions tabs instead of the simulated playback/live-caption timers.
+                                                                                                - Add more shadcn/ui components as needed via `npx shadcn@latest add <component>` (the `components.json` is already configured).
 
-## Notes for extending this into a real product
+                                                                                                ## Accessibility considerations already baked in
 
-- Wire the `/upload` page's `handleConvert` to an actual API route (e.g. `app/api/convert/route.ts`) that accepts the files and calls your conversion pipeline (OCR, TTS, STT, image captioning, summarization).
-- Persist the user's profile (needs) in a database or cookie instead of query params.
-- Add authentication if you need per-student history.
-- Swap the mocked results in `/results` for real conversion output, streamed or polled from your backend.
-- Add more shadcn/ui components as needed via `npx shadcn@latest add <component>` (the `components.json` is already configured).
-
-## Accessibility considerations already baked in
-
-- Semantic headings and landmark regions (`header`, `main`, `footer`)
-- Visible focus rings on all interactive elements
-- Sufficient color contrast on the dark theme
-- Labeled icon-only buttons (`aria-label`)
-- Keyboard-operable checkboxes and tabs (Radix primitives)
+                                                                                                - Semantic headings and landmark regions (`header`, `main`, `footer`)
+                                                                                                - Visible focus rings on all interactive elements
+                                                                                                - Sufficient color contrast on the dark theme
+                                                                                                - Labeled icon-only buttons (`aria-label`)
+                                                                                                - Keyboard-operable checkboxes, tabs, and controls (Radix primitives)

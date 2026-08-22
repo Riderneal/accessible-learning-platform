@@ -95,6 +95,9 @@ function UploadPageInner() {
   function handleConvert() {
     setIsConverting(true);
     const params = new URLSearchParams(searchParams.toString());
+    if (files.length > 0) {
+      params.set("files", files.map((f) => f.name).join("|"));
+    }
     setTimeout(() => {
       router.push(`/results?${params.toString()}`);
     }, 1200);
