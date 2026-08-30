@@ -89,7 +89,7 @@ export default function ProfilePage() {
 
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-base">Your name (optional)</CardTitle>
+          <CardTitle as="h2" className="text-base">Your name (optional)</CardTitle>
         </CardHeader>
         <CardContent>
           <input
@@ -136,6 +136,7 @@ export default function ProfilePage() {
                   checked={isChecked}
                   onCheckedChange={() => toggle(opt.id)}
                   onClick={(e) => e.stopPropagation()}
+                  aria-label={opt.label}
                 />
               </CardHeader>
               <CardContent>

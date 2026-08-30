@@ -1,0 +1,22 @@
+[
+  {
+    "route": "/",
+    "violations": [],
+    "passes": 18
+  },
+  {
+    "route": "/profile",
+    "violations": [],
+    "passes": 33
+  },
+  {
+    "route": "/upload",
+    "violations": [],
+    "passes": 16
+  },
+  {
+    "route": "/results",
+    "violations": [],
+    "passes": 16
+  }
+]
